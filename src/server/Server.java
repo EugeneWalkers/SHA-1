@@ -14,24 +14,24 @@ public class Server {
 
     private File data; // исходный файл
 
-    private SHA assignedSHA; // подписанный sha
+    private SHA.AssignedSHA assignedSHA; // подписанный sha
 
     private SHA sha; // sha, основанный на файле
 
     private RSA rsa; // rsa
 
-    {
-        shaFile = new File("sha.txt");
-        rsaFile = new File("rsa.txt");
-    }
-
     public Server(final File data, final String path) {
         this.data = data;
         this.path = path;
+        this.shaFile = new File(path + "sha.txt");
+        this.rsaFile = new File(path + "rsa.txt");
     }
 
-    public void generateRSA(){
+    public void generateRSA() {
         rsa = RSA.Generator.generateRSA();
+        System.out.println("RSA:");
+        System.out.println(rsa.toString());
+        System.out.println();
     }
 
     public void createSHA() {
@@ -40,6 +40,10 @@ public class Server {
         }
 
         sha = SHA.SHA1Crypter.getSHA1(data);
+
+        System.out.println("SHA:");
+        System.out.println(sha.toString());
+        System.out.println();
     }
 
     public void assignSHA() {
@@ -47,7 +51,11 @@ public class Server {
             throw new NullPointerException("SHA must be definited");
         }
 
-        assignedSHA = new SHA(RSA.Assigner.assign(sha.toString(), rsa.getCloseRSA()));
+        assignedSHA = new SHA.AssignedSHA(RSA.Assigner.assign(sha.toString(), rsa.getCloseRSA()));
+
+        System.out.println("Assigned SHA:");
+        System.out.println(assignedSHA);
+        System.out.println();
     }
 
     public void sendAllData() {
@@ -55,9 +63,14 @@ public class Server {
             throw new NullPointerException("SHA must be assigned");
         }
 
+        System.out.println("Data is sending...");
+
         sendFile();
         sendSHA();
         sendRSA();
+
+        System.out.println("Data was sent!");
+        System.out.println();
 
         clearAll();
     }
@@ -71,7 +84,7 @@ public class Server {
     }
 
     private void sendFile() {
-        DataKeeper.copyFile(data, path + "data.txt");
+        DataKeeper.copyFile(data, path, "data.txt");
     }
 
     private void sendRSA() {

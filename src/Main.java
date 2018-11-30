@@ -5,10 +5,10 @@ import java.io.File;
 
 public class Main {
 
-    final static File file = new File(""); // Вписать имя файла здесь
+    final static File file = new File("Some file.txt"); // Вписать имя файла здесь
     final static String path = "fromServerToClient/";
 
-    public static void main(final String[] args){
+    public static void main(final String[] args) {
         final Server server = new Server(file, path);
         final Client client = new Client(path);
 
@@ -23,12 +23,11 @@ public class Main {
 
         final boolean isOriginal = client.checkEqualsSHA();
 
-        if (isOriginal){
+        if (isOriginal) {
             System.out.println("Ура!");
         } else {
             System.out.println("Лохотрон...");
         }
-
     }
 
 }

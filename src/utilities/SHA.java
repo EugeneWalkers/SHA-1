@@ -20,10 +20,31 @@ public class SHA {
         return value.toString();
     }
 
+    /**
+     * Используется после подписания SHA алгоритмом RSA, когда получаем значение вида:
+     * 123;234; (что соответствует SHA из 2 символов, каждый зашифрован RSA
+     */
+    public static class AssignedSHA{
+        private final String value;
+
+        public AssignedSHA(final String value){
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
     public static class SHA1Crypter {
 
+        private SHA1Crypter(){
+
+        }
+
         public static SHA getSHA1(final File file){
-            return null;
+            return new SHA("123");
         }
 
     }

@@ -4,8 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+
+import static java.nio.file.FileSystems.getDefault;
 
 public class DataKeeper {
 
@@ -17,9 +22,12 @@ public class DataKeeper {
         }
     }
 
-    public static void copyFile(final File file, final String path) {
+    public static void copyFile(final File file, final String pathString, final String fileName) {
         try {
-            Files.copy(file.toPath(), new File(path).toPath());
+            final Path path = FileSystems.getDefault().getPath(pathString);
+            Files.createDirectory(path);
+            final Path pathWithFile = FileSystems.getDefault().getPath(pathString, fileName);
+            Files.copy(file.toPath(), pathWithFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
